@@ -1,0 +1,13 @@
+""" create the structure of the neural network """
+    model = Sequential()
+    model.add(Bidirectional(LSTM(512,
+        input_shape=(network_input.shape[1], network_input.shape[2]), #n_time_steps, n_features?
+        return_sequences=True)))
+    model.add(SeqSelfAttention(attention_activation='sigmoid'))
+    model.add(LSTM(512, return_sequences=True, recurrent_dropout=0.3,))
+    model.add(SeqSelfAttention(attention_activation='sigmoid'))
+    model.add(LSTM(512))
+    model.add(Dense(256))
+    model.add(Dense(n_vocab))
+    model.add(Activation('softmax'))
+    model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
